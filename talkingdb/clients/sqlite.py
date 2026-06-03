@@ -5,6 +5,8 @@ from contextlib import contextmanager
 
 GRAPH_DB = os.getenv("GRAPH_DB", "data/graphs.db")
 
+SQLITE_BUSY_TIMEOUT_MS = int(os.getenv("TDB_SQLITE_BUSY_TIMEOUT_MS", "5000"))
+
 _thread_local = threading.local()
 
 
@@ -28,6 +30,7 @@ def _create_connection() -> sqlite3.Connection:
     conn.execute("PRAGMA journal_mode=WAL;")
     conn.execute("PRAGMA synchronous=NORMAL;")
     conn.execute("PRAGMA temp_store=MEMORY;")
+    conn.execute(f"PRAGMA busy_timeout={SQLITE_BUSY_TIMEOUT_MS};")
 
     return conn
 
