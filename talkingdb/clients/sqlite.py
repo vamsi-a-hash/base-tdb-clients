@@ -31,7 +31,8 @@ def _create_connection() -> sqlite3.Connection:
     conn.execute("PRAGMA synchronous=NORMAL;")
     conn.execute("PRAGMA temp_store=MEMORY;")
     conn.execute(f"PRAGMA busy_timeout={SQLITE_BUSY_TIMEOUT_MS};")
-
+    conn.execute("PRAGMA foreign_keys = ON;")
+    
     return conn
 
 
